@@ -96,7 +96,19 @@ async function run(){
             const result = await orderCollection.insertOne(order);
             res.send(result);
         });
-
+        // Delete order
+        app.delete("/order/:id", async (req, res) => {
+          const id = req.params.id;
+          const query = { _id: ObjectId(id) };
+          const result = await orderCollection.deleteOne(query);
+          res.send(result);
+        });
+        // Delete User
+        // app.delete("/user/:email", async (req, res) => {
+        //   const email = req.params.email;
+        //   const result = await userCollection.deleteOne({ email: email });
+        //   res.send(result);
+        // });
         // Get User & Admin
         app.get('/admin/:email', async (req, res) => {
             const email = req.params.email;
