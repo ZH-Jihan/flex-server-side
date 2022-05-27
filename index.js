@@ -116,6 +116,11 @@ async function run(){
         // Order Post server
         app.post('/order' , async(req,res)=>{
             const order = req.body;
+            const query = {productName : order.productName}
+            const exists = await orderCollection.findOne(query);
+            if (exists) {
+              return res.send({ success: false, booking: exists })
+            }
             const result = await orderCollection.insertOne(order);
             res.send(result);
         });
