@@ -86,8 +86,18 @@ async function run(){
           res.send(result);
       });
         // Book Order
-        
-        app.get('/order' , async(req , res)=>{
+        app.get("/order", async (req, res) => {
+          const query = {};
+          const cursor = orderCollection.find(query);
+          const result = await cursor.toArray();
+          res.send(result);
+        });
+    
+        app.get("/order/:email", async (req, res) => {
+          const email = req.params.email;
+      orderCollection.find({ email: email }).toArray((err, docs) => res.send(docs));
+        });
+        app.get('/order' ,verifyJWT, async(req , res)=>{
             const email = req.query.email;
             if(email){
                 const query = {customarmail : email};
