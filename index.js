@@ -69,9 +69,22 @@ async function run(){
         app.delete("/product/:id", async (req, res) => {
           const id = req.params.id;
           const query = { _id: ObjectId(id) };
-          const result = await partsCollection.deleteOne(query);
+          const result = await productCollection.deleteOne(query);
           res.send(result);
         });
+        // get review
+        app.get("/review", async (req, res) => {
+          const query = {};
+          const cursor = reviewCollection.find(query);
+          const review = await cursor.toArray();
+          res.send(review);
+        });
+
+        app.post('/review' , async(req,res)=>{
+          const review = req.body;
+          const result = await reviewCollection.insertOne(review);
+          res.send(result);
+      });
         // Book Order
         
         app.get('/order' , async(req , res)=>{
@@ -94,6 +107,11 @@ async function run(){
         app.post('/order' , async(req,res)=>{
             const order = req.body;
             const result = await orderCollection.insertOne(order);
+            res.send(result);
+        });
+        app.post('/product' , async(req,res)=>{
+            const order = req.body;
+            const result = await productCollection.insertOne(order);
             res.send(result);
         });
         // Delete order
@@ -139,10 +157,11 @@ async function run(){
           app.put("/user/admin/:email", verifyJWT, verifyAdmin, async (req, res) => {
             const email = req.params.email;
             const filter = { email: email };
+            const options = { upsert: true };
             const updateDoc = {
               $set: { role: "admin" },
             };
-            const result = await userCollection.updateOne(filter, updateDoc);
+            const result = await userCollection.updateOne(filter, updateDoc,options);
             res.send(result);
           });
       
