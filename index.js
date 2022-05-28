@@ -86,6 +86,7 @@ async function run(){
           res.send(result);
       });
         // Book Order
+
         app.get("/order", async (req, res) => {
           const query = {};
           const cursor = orderCollection.find(query);
@@ -93,20 +94,20 @@ async function run(){
           res.send(result);
         });
     
-      //   app.get("/order/:email", async (req, res) => {
-      //     const email = req.params.email;
-      // orderCollection.find({ email: email }).toArray((err, docs) => res.send(docs));
-      //   });
-        app.get('/order/:email' ,verifyJWT, async(req , res)=>{
-            const email = req.query.email;
-            if(email){
-                const query = {customarmail : email};
-            const orders = await orderCollection.find(query).toArray();
-            return res.send(orders);
-            }else{
-                return res.status(403).send({ message: 'forbidden access' });
-            }
+        app.get("/order/:email", async (req, res) => {
+          const email = req.params.email;
+      orderCollection.find({ customarmail: email }).toArray((err, docs) => res.send(docs));
         });
+        // app.get('/order/:email' , async(req , res)=>{
+        //     const email = req.query.email;
+        //     if(email){
+        //         const query = {customarmail : email};
+        //     const orders = await orderCollection.find(query).toArray();
+        //     return res.send(orders);
+        //     }else{
+        //         return res.status(403).send({ message: 'forbidden access' });
+        //     }
+        // });
         app.get('/order/:id',async(req, res) =>{
           const id = req.params.id;
           const query = {_id: ObjectId(id)};
