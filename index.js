@@ -93,11 +93,11 @@ async function run(){
           res.send(result);
         });
     
-        app.get("/order/:email", async (req, res) => {
-          const email = req.params.email;
-      orderCollection.find({ email: email }).toArray((err, docs) => res.send(docs));
-        });
-        app.get('/order' ,verifyJWT, async(req , res)=>{
+      //   app.get("/order/:email", async (req, res) => {
+      //     const email = req.params.email;
+      // orderCollection.find({ email: email }).toArray((err, docs) => res.send(docs));
+      //   });
+        app.get('/order/:email' ,verifyJWT, async(req , res)=>{
             const email = req.query.email;
             if(email){
                 const query = {customarmail : email};
